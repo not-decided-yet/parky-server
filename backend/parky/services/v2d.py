@@ -1,7 +1,7 @@
 from typing import NamedTuple, Dict, List, Tuple
 
 from parky.utils import Singleton, generate_random_token
-
+from parky.database import get_db
 from parky.services import VehicleService, UserService
 
 
@@ -70,28 +70,30 @@ class V2DRelayService(Singleton):
         return (second_token, user)
 
     def auth_client(self, uid: str, second_token: str):
-        # Check user id
-        user_service = UserService.instance()
-        user = user_service.get_user_by_id(uid)
-        if user is None:
-            raise ValueError("User ID not found")
+        with get_db() as db:
+            # Check user id
+            user_service = UserService.instance()
+            user = user_service.get_user_by_id(db, uid)
+            if user is None:
+                raise ValueError("User ID not found")
 
-        # Token Check
-        session = self.session_by_token.get(second_token)
-        if session is None:
-            raise ValueError("Session not found")
+            # Token Check
+            session = self.session_by_token.get(second_token)
+            if session is None:
+                raise ValueError("Session not found")
 
-        if session.uid != uid:
-            raise ValueError("User ID is not matched")
+            if session.uid != uid:
+                raise ValueError("User ID is not matched")
 
-        token_list = self.tokens_by_session[session]
-        if len(token_list) == 1:
-            raise ValueError("Need to do vehicle authentication first")
+            token_list = self.tokens_by_session[session]
+            if len(token_list) == 1:
+                raise ValueError("Need to do vehicle authentication first")
 
-        if token_list[1] != second_token:
-            raise ValueError("Token mismatch")
+            if token_list[1] != second_token:
+                raise ValueError("Token mismatch")
 
-        # Clear
-        del self.tokens_by_session[session]
-        for token in token_list:
-            del self.session_by_token[token]
+            # Register and Clear
+            user_service.add_car_to_user(db, uid, session.vid)
+            del self.tokens_by_session[session]
+            for token in token_list:
+                del self.session_by_token[token]

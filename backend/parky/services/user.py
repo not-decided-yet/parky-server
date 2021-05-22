@@ -47,6 +47,21 @@ class UserService(Singleton):
         """
         return db.query(User).filter(User.user_id == user_id).one_or_none()
 
+    def add_car_to_user(self, db: Session, user_id: str, car_number: str):
+        """
+        Add car number to User object.
+
+        :param db: SQLAlchemy DB Session
+        :param user_id: User's id
+        :param car_number: Car number
+        """
+        user = self.get_user_by_id(db, user_id)
+        if user is None:
+            raise ValueError("User not found")
+
+        user.car_number = car_number
+        db.commit()
+
     def check_session(self, token: str) -> str:
         """
         Check the session data based on given token.

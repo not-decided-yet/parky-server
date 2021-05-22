@@ -15,6 +15,7 @@ class User(Base):
     user_id = Column(String(length=30))
     password = Column(String(length=30))
     public_key = Column(Text)
+    car_number = Column(String(length=10), default="N/A")
 
     created_at = Column(DateTime, default=datetime.now)
 
