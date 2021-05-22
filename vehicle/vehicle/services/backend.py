@@ -31,4 +31,5 @@ class BackendService:
             headers={"Content-Type": "application/json"},
             json=payload,
         )
-        return response.status_code != 200
+
+        return response.status_code == 200

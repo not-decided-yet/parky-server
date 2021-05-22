@@ -58,4 +58,5 @@ async def handle_register_vehicle(data: RegisterVehicleRequest, response: Respon
         response.status_code = 400
         return {"reason": "Registering vehicle is failed"}
 
+    response.status_code = 200
     return {"ok": True}
