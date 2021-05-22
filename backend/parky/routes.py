@@ -21,7 +21,6 @@ class SignupRequest(BaseModel):
 
 
 async def handle_sign_up(signup_request: SignupRequest, db: Session = Depends(get_db)):
-    print(*signup_request)
     response = await UserService.check_and_add_user(
         db=db,
         name=signup_request.name,
