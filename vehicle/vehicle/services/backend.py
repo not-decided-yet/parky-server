@@ -1,4 +1,5 @@
 """Toolset for communication with backend server."""
+from typing import Tuple
 import requests
 
 from vehicle.constants import BACKEND_ENDPOINT
@@ -9,6 +10,7 @@ logger = get_logger("BackendService")
 
 
 class BackendService:
+    @staticmethod
     def register_vehicle(vehicle_name: str, public_key: str, private_key: str) -> bool:
         """
         Retrieve VID from backend by using vehicle name.
@@ -33,3 +35,24 @@ class BackendService:
         )
 
         return response.status_code == 200
+
+    @staticmethod
+    def v2d_auth_vehicle(vid: str, token: str) -> Tuple[str, str]:
+        """
+        Make request for V2D vehicle authentication.
+
+        :param vid: Vehicle ID
+        :param token: Auth token
+        :returns: Tuple(second_token, public_key)
+        """
+        payload = {"vid": vid, "token": token}
+        logger.info("V2D Authenticating to user")
+
+        response = requests.post(
+            BACKEND_ENDPOINT + "/v2d/auth/vehicle", headers={"Content-Type": "application/json"}, json=payload
+        )
+        if response.status_code != 200:
+            raise ValueError("Error occurred while authenticating vehicle by V2D")
+
+        result = response.json()
+        return result["token"], result["public_key"]
