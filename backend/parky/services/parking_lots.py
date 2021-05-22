@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional
 
 from sqlalchemy.orm import Session
 
-from parky.database.models import ParkingLot
+from parky.database.models import ParkingLot, User
 from parky.utils import Singleton
 
 
@@ -23,17 +23,19 @@ class ParkingLotService(Singleton):
         results = db.query(ParkingLot).all()
         return [parking_lot.as_dict() for parking_lot in results]
 
-    def income_car(self, db: Session, parking_id: int, is_user: bool, vehicle_number: str) -> str:
+    def income_car(self, db: Session, parking_id: int, vehicle_number: str) -> str:
         """
         handel incoming car
 
         :param db: SQLAlchemy DB Session
         :parking_id: Parking lot ID
-        :is_user Inform that this driver is our user
         :vehicle_number Vehicle number of incoming car
 
         :returns: Parking number for incoming car
         """
+        user = db.query(User).filter(User.car_number == vehicle_number).all()
+        is_user = 0 if len(user) == 0 else 1
+
         result = db.query(ParkingLot).filter(ParkingLot._id == parking_id).first()
         lot_dict = result.as_dict()
 
@@ -62,7 +64,7 @@ class ParkingLotService(Singleton):
 
         return lot_dict["lots_number"][income_idx]
 
-    def go_out_car(self, db: Session, vehicle_number: str, user_id: Optional[str] = None) -> int:
+    def go_out_car(self, db: Session, vehicle_number: str) -> int:
         """
         handel go_out car
 
@@ -73,6 +75,9 @@ class ParkingLotService(Singleton):
 
         :returns: 1 if success, 0 if fail
         """
+        user = db.query(User).filter(User.car_number == vehicle_number).all()
+        user_id = None if len(user) == 0 else user.user_id
+
         if vehicle_number not in self.vehicle_to_parking_place:
             return 0
 
