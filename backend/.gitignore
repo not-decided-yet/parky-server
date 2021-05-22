@@ -185,3 +185,5 @@ Thumbs.db
 # Additional
 .env
 .vscode/settings.json
+
+env/
