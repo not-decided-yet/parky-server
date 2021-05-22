@@ -1,7 +1,8 @@
 import json
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, Integer, String, Float, Text
+from sqlalchemy import Column, DateTime, Integer, String, Float, Text, Boolean
+from sqlalchemy.sql.sqltypes import Boolean
 
 from .database import Base
 
@@ -38,6 +39,7 @@ class ParkingLot(Base):
     name = Column(String(length=100))
     longitude = Column(Float)
     latitude = Column(Float)
+    is_free = Column(Boolean)
     lots = Column(Text)
     priority = Column(Text)
 
@@ -52,6 +54,7 @@ class ParkingLot(Base):
             "name": self.name,
             "longitude": self.longitude,
             "latitude": self.latitude,
+            "is_free": self.is_free,
             "lots": self.lots,
             "priority": self.priority,
             "created_at": self.created_at,
