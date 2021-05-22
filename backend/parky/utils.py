@@ -6,7 +6,7 @@ def get_logger():
     """
     Generate logger.
     """
-    logger = logging.getLogger("ParkyVehicle")
+    logger = logging.getLogger("Parky")
     logger.setLevel(logging.DEBUG)
     logger.propagate = False
 
