@@ -1,8 +1,6 @@
-import json
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, Integer, String, Float, Text, Boolean
-from sqlalchemy.sql.sqltypes import Boolean
+from sqlalchemy import Boolean, Column, DateTime, Float, Integer, String, Text
 
 from .database import Base
 
@@ -13,7 +11,7 @@ class User(Base):
     uid = Column(Integer, primary_key=True, index=True)
     name = Column(String(length=100))
     ssn = Column(String(length=14))
-    id = Column(String(length=30))
+    user_id = Column(String(length=30))
     password = Column(String(length=30))
     public_key = Column(Text)
 
@@ -27,7 +25,7 @@ class User(Base):
             "uid": self.uid,
             "name": self.name,
             "ssn": self.ssn,
-            "id": self.id,
+            "user_id": self.user_id,
             "public_key": self.public_key,
             # Password is not provided
             "created_at": self.created_at,
