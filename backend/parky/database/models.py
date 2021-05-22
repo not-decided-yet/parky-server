@@ -43,7 +43,8 @@ class ParkingLot(Base):
     longitude = Column(Float)
     latitude = Column(Float)
     is_free = Column(Boolean)
-    lots = Column(Text)
+    lots_status = Column(Text)
+    lots_number = Column(Text)
     priority = Column(Text)
 
     created_at = Column(DateTime, default=datetime.now)
@@ -58,8 +59,9 @@ class ParkingLot(Base):
             "longitude": self.longitude,
             "latitude": self.latitude,
             "is_free": self.is_free,
-            "lots": self.lots,
-            "priority": self.priority,
+            "lots_status": self.lots_status.split(","),
+            "lots_number": self.lots_number.split(","),
+            "priority": [int(i) for i in self.priority.split(",")],
             "created_at": self.created_at,
         }
 

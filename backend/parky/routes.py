@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from parky.database import ParkingLot, User, get_db
-from parky.services import UserService, VehicleService, V2DRelayService
+from parky.services import UserService, VehicleService, V2DRelayService, ParkingLotService, UserService
 from parky.utils import get_logger
 
 logger = get_logger("RouteHandler")
@@ -167,3 +167,8 @@ async def handle_auth_client(data: AuthClientRequest):
         raise HTTPException(status_code=404, detail="Vehicle not found by given ids")
 
     return {"status": True}
+
+    
+async def handle_get_all_parking_lot(db: Session = Depends(get_db)):
+    parking_lots = ParkingLotService.get_all_lots()
+    return {"parking_lots": parking_lots}

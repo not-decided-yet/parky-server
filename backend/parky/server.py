@@ -34,5 +34,7 @@ def create_app():
     app.post("/v2d/auth/{uid}/{vid}")(handlers.handle_start_session)
     app.post("/v2d/auth/vehicle")(handlers.handle_auth_vehicle)
     app.post("/v2d/auth/client")(handlers.handle_auth_client)
+    
+    app.get("/parking")(handlers.handle_get_all_parking_lot)
 
     return app
