@@ -1,16 +1,9 @@
-import random
-import string
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 from parky.database import Vehicle
 from parky.utils import Singleton, get_logger, verify_signature
 
 logger = get_logger("VehicleService")
-
-
-def generate_random_token(length: int):
-    """Generate random token by given length."""
-    return "".join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
 
 
 class VehicleService(Singleton):
@@ -44,6 +37,14 @@ class VehicleService(Singleton):
         self.vehicles[number] = Vehicle(number=number, public_key=public_key)
         logger.info(f"Register: Vehicle {number} registered")
         return 0
+
+    def get_vehicles(self) -> List[Vehicle]:
+        """
+        Returns every vehicles.
+
+        :returns: List of ``Vehicle``
+        """
+        return [value for value in self.vehicles.values()]
 
     def find_vehicle_by_number(self, number: str) -> Optional[Vehicle]:
         """

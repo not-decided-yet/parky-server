@@ -1,4 +1,6 @@
 import logging
+import random
+import string
 import sys
 
 
@@ -14,6 +16,11 @@ def get_logger(name: str = "ParkyVehicle"):
     stream_handler.setFormatter(logging.Formatter("[%(asctime)s] %(message)s"))
     logger.addHandler(stream_handler)
     return logger
+
+
+def generate_random_token(length: int):
+    """Generate random token by given length."""
+    return "".join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
 
 
 class Singleton:

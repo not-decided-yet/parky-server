@@ -23,8 +23,11 @@ def create_app():
 
     # Register handlers
     app.get("/")(handlers.handle_status)
-    app.post("/user")(handlers.handle_sign_up)
-    app.post("/user/login")(handlers.handle_log_in)
+
+    app.post("/user")(handlers.handle_signup)
+    app.post("/user/signin")(handlers.handle_signin)
+
+    app.get("/vehicle")(handlers.handle_get_vehicles)
     app.get("/vehicle/{number}")(handlers.handle_find_vehicle)
     app.post("/vehicle")(handlers.handle_register_vehicle)
 
