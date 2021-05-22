@@ -1,8 +1,8 @@
-from typing import NamedTuple, Dict, List, Tuple
+from typing import Dict, List, NamedTuple, Tuple
 
-from parky.utils import Singleton, generate_random_token
 from parky.database import get_db
-from parky.services import VehicleService, UserService
+from parky.services import UserService, VehicleService
+from parky.utils import Singleton, generate_random_token
 
 
 class Session(NamedTuple):

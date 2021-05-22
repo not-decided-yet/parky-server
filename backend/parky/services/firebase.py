@@ -1,6 +1,6 @@
-from parky.constants import FIREBASE_API_KEY, FIREBASE_ALERT_ICON
-
 import requests
+
+from parky.constants import FIREBASE_ALERT_ICON, FIREBASE_API_KEY
 
 
 class FirebaseService:
