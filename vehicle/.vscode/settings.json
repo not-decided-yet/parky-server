@@ -3,6 +3,6 @@
     "editor.renderFinalNewline": true,
     "editor.trimAutoWhitespace": true,
     "files.trimTrailingWhitespace": true,
-    "python.pythonPath": "vehicle/env/bin/python",
+    "python.pythonPath": "env/bin/python",
     "python.formatting.provider": "black"
 }
