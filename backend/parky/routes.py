@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from parky.database import ParkingLot, User, get_db
-from parky.services import UserService, VehicleService
+from parky.services import UserService, VehicleService, V2DRelayService
 from parky.utils import get_logger
 
 logger = get_logger("RouteHandler")
@@ -127,3 +127,43 @@ async def handle_register_vehicle(data: RegisterVehicleRequest, response: Respon
 
     response.status_code = 200
     return {"ok": True}
+
+
+async def handle_start_session(uid: str, vid: str):
+    v2d_relay_service = V2DRelayService()
+    try:
+        token, public_key = v2d_relay_service.start_session(uid, vid)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Vehicle not found by given ids")
+
+    return {"token": token, "public_key": public_key}
+
+
+class AuthVehicleRequest(BaseModel):
+    vid: str
+    token: str
+
+
+async def handle_auth_vehicle(data: AuthVehicleRequest):
+    v2d_relay_service = V2DRelayService()
+    try:
+        token, public_key = v2d_relay_service.auth_vehicle(data.vid, data.token)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Vehicle not found by given ids")
+
+    return {"token": token, "public_key": public_key}
+
+
+class AuthClientRequest(BaseModel):
+    uid: str
+    token: str
+
+
+async def handle_auth_client(data: AuthClientRequest):
+    v2d_relay_service = V2DRelayService()
+    try:
+        v2d_relay_service.auth_client(data.uid, data.token)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Vehicle not found by given ids")
+
+    return {"status": True}

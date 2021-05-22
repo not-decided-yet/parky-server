@@ -31,4 +31,8 @@ def create_app():
     app.get("/vehicle/{number}")(handlers.handle_find_vehicle)
     app.post("/vehicle")(handlers.handle_register_vehicle)
 
+    app.post("/v2d/auth/{uid}/{vid}")(handlers.handle_start_session)
+    app.post("/v2d/auth/vehicle")(handlers.handle_auth_vehicle)
+    app.post("/v2d/auth/client")(handlers.handle_auth_client)
+
     return app
