@@ -1,0 +1,6 @@
+fastapi[all]
+sqlalchemy
+requests
+uvicorn
+mysql-client
+mysql-connector-python
