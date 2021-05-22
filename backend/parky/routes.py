@@ -60,3 +60,19 @@ async def handle_register_vehicle(data: RegisterVehicleRequest, response: Respon
 
     response.status_code = 200
     return {"ok": True}
+
+
+class SigninRequest(BaseModel):
+    user_id: str
+    password: str
+
+
+async def handle_log_in(signin_request: SigninRequest, db: Session = Depends(get_db)):
+    response = await UserService.check_log_in(
+        db=db,
+        user_id=signin_request.user_id,
+        password=signin_request.password,
+    )
+    if not response:
+        raise HTTPException(status_code=401, detail=f"not existed user {signin_request.user_id} try login.")
+    return {"user_id": signin_request.user_id, "message": f"user {signin_request.user_id} log in."}
