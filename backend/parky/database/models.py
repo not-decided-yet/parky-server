@@ -15,6 +15,7 @@ class User(Base):
     ssn = Column(String(length=14))
     id = Column(String(length=30))
     password = Column(String(length=30))
+    public_key = Column(Text)
 
     created_at = Column(DateTime, default=datetime.now)
 
@@ -27,6 +28,7 @@ class User(Base):
             "name": self.name,
             "ssn": self.ssn,
             "id": self.id,
+            "public_key": self.public_key,
             # Password is not provided
             "created_at": self.created_at,
         }
