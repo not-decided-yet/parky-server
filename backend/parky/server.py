@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .database import Base, engine
-from .routes import handle_status
+from .routes import handle_sign_up, handle_status
 
 origins = ["http://localhost", "http://localhost:3000", "https://parky.ml"]
 
@@ -23,5 +23,6 @@ def create_app():
 
     # Register handlers
     app.get("/")(handle_status)
+    app.post("/user")(handle_sign_up)
 
     return app
