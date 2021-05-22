@@ -4,3 +4,4 @@ requests
 uvicorn
 mysql-client
 mysql-connector-python
+python-dotenv
