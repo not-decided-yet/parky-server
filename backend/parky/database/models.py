@@ -12,6 +12,7 @@ class User(Base):
     uid = Column(Integer, primary_key=True, index=True)
     name = Column(String(length=100))
     ssn = Column(String(length=14))
+    firebase_token = Column(Text)
     user_id = Column(String(length=30))
     password = Column(String(length=30))
     public_key = Column(Text)
