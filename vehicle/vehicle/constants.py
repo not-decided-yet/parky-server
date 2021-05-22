@@ -1,5 +1,6 @@
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -11,3 +12,10 @@ VEHICLE_PUBLIC_KEY_PATH = os.getenv("PARKY_VEHICLE_PUBLIC_KEY_PATH", "/keys/vehi
 VEHICLE_PRIVATE_KEY_PATH = os.getenv("PARKY_VEHICLE_PRIVATE_KEY_PATH", "/keys/vehicle")
 #: Backend endpoint
 BACKEND_ENDPOINT = os.getenv("PARKY_BACKEND_ENDPOINT", "")
+
+# Obtain keys
+with open(VEHICLE_PRIVATE_KEY_PATH, "r", encoding="utf-8") as f:
+    VEHICLE_PRIVATE_KEY = f.read()
+
+with open(VEHICLE_PUBLIC_KEY_PATH, "r", encoding="utf-8") as f:
+    VEHICLE_PUBLIC_KEY = f.read()
