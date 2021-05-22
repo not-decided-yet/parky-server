@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from parky.constants import DB_PASSWORD, DB_SERVER, DB_USER, DB_NAME
+from parky.constants import DB_NAME, DB_PASSWORD, DB_SERVER, DB_USER
 
 SQLALCHEMY_DATABASE_URL = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}/{DB_NAME}"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
