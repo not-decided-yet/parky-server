@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from parky.database import ParkingLot, User, get_db
-from parky.services import UserService, VehicleService, V2DRelayService, ParkingLotService, UserService
+from parky.services import ParkingLotService, UserService, V2DRelayService, VehicleService
 from parky.utils import get_logger
 
 logger = get_logger("RouteHandler")
@@ -168,7 +168,32 @@ async def handle_auth_client(data: AuthClientRequest):
 
     return {"status": True}
 
-    
+
 async def handle_get_all_parking_lot(db: Session = Depends(get_db)):
-    parking_lots = ParkingLotService.get_all_lots()
+    parking_lots = ParkingLotService.get_all_lots(db)
     return {"parking_lots": parking_lots}
+
+
+async def handle_income_car(parking_id: int, vehicle_number: str, db: Session = Depends(get_db)):
+    parking_service = ParkingLotService()
+    parking_number = parking_service.income_car(db, parking_id, vehicle_number)
+
+    return {"parking_number": parking_number}
+
+
+async def handle_go_out_car(vehicle_number: str, db: Session = Depends(get_db)):
+    parking_service = ParkingLotService()
+    status = parking_service.go_out_car(db, vehicle_number)
+    if status == 0:
+        raise HTTPException(status_code=404, detail="Vehicle not found by given ids")
+
+    return {"status": True}
+
+
+async def handle_reserve(parking_id: int, user_id: str, db: Session = Depends(get_db)):
+    parking_service = ParkingLotService()
+    status = parking_service.reserve(db, parking_id, user_id)
+    if status == 0:
+        raise HTTPException(status_code=404, detail="already reserved user")
+
+    return {"status": True}
