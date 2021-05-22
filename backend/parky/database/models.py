@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from pydantic import BaseModel
 from sqlalchemy import Boolean, Column, DateTime, Float, Integer, String, Text
 
 from .database import Base
@@ -59,3 +60,14 @@ class ParkingLot(Base):
             "priority": self.priority,
             "created_at": self.created_at,
         }
+
+
+class Vehicle(BaseModel):
+    """
+    Data Type for vehicle.
+    """
+
+    #: Plate number
+    number: str
+    #: Public key
+    public_key: str

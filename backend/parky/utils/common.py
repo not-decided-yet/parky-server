@@ -2,11 +2,11 @@ import logging
 import sys
 
 
-def get_logger():
+def get_logger(name: str = "ParkyVehicle"):
     """
     Generate logger.
     """
-    logger = logging.getLogger("Parky")
+    logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
     logger.propagate = False
 
